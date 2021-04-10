@@ -102,10 +102,10 @@
   resolved "https://registry.yarnpkg.com/@types/node/-/node-13.11.0.tgz#390ea202539c61c8fa6ba4428b57e05bc36dc47b"
   integrity sha512-uM4mnmsIIPK/yeO+42F2RQhGUIs39K2RFmugcJANppXe6J1nvH87PvzPZYpza7Xhhs8Yn9yIAVdLZ84z61+0xQ==
 
-"@types/node@^14.6.2":
-  version "14.14.37"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-14.14.37.tgz#a3dd8da4eb84a996c36e331df98d82abd76b516e"
-  integrity sha512-XYmBiy+ohOR4Lh5jE379fV2IU+6Jn4g5qASinhitfyO71b/sCo6MKsMLF5tc7Zf2CE8hViVQyYSobJNke8OvUw==
+"@types/node@^12.0.12":
+  version "12.20.7"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-12.20.7.tgz#1cb61fd0c85cb87e728c43107b5fd82b69bc9ef8"
+  integrity sha512-gWL8VUkg8VRaCAUgG9WmhefMqHmMblxe2rVpMF86nZY/+ZysU+BkAp+3cz03AixWDSSz0ks5WX59yAhv/cDwFA==
 
 "@types/plist@^3.0.1":
   version "3.0.2"
@@ -691,7 +691,7 @@ ejs@^3.1.6:
   dependencies:
     jake "^10.6.1"
 
-electron-builder@^22.10.5:
+electron-builder@^22.9.1:
   version "22.10.5"
   resolved "https://registry.yarnpkg.com/electron-builder/-/electron-builder-22.10.5.tgz#03b156b93e6012609027c3aaa69201a3ad21e454"
   integrity sha512-0q/289UUJUhRou6lZKDz/wzK6WprIQ6VXMTmaI+w9qXvSNugPC9UA5s2zXInOkjZOvO/xKnjeyiavrVSHYF3tA==
@@ -725,13 +725,13 @@ electron-publish@22.10.5:
     lazy-val "^1.0.4"
     mime "^2.5.0"
 
-electron@^12.0.2:
-  version "12.0.2"
-  resolved "https://registry.yarnpkg.com/electron/-/electron-12.0.2.tgz#d92be205f1937627bd6718aad44ac161382b4c2d"
-  integrity sha512-14luh9mGzfL4e0sncyy0+kW37IU7Y0Y1tvI97FDRSW0ZBQxi5cmAwSs5dmPmNBFBIGtzkaGaEB01j9RjZuCmow==
+electron@^11.3.0:
+  version "11.4.2"
+  resolved "https://registry.yarnpkg.com/electron/-/electron-11.4.2.tgz#02005d9f5d77ea6485efeffdb5c5433c769ddda4"
+  integrity sha512-P0PRLH7cXp8ZdpA9yVPe7jRVM+QeiAtsadqmqS6XY3AYrsH+7bJnVrNuw6p/fcmp+b/UxWaCexobqQpyFJ5Qkw==
   dependencies:
     "@electron/get" "^1.0.1"
-    "@types/node" "^14.6.2"
+    "@types/node" "^12.0.12"
     extract-zip "^1.0.3"
 
 emoji-regex@^7.0.1:

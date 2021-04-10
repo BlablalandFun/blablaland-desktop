@@ -6,7 +6,7 @@
     "dev": "electron-webpack dev",
     "pack": "electron-builder --dir",
     "dist": "electron-builder",
-    "release": ""
+    "release": "electron-builder"
   },
   "dependencies": {},
   "devDependencies": {
