@@ -1,9 +1,6 @@
 appId: "fun.blablaland.desktop"
 productName: Blablaland
 
-directories:
-  output: "release"
-
 files:
   - "!plugins/"
 
@@ -13,13 +10,15 @@ extraResources:
     filter:
       - "**/*"
 
-win:
+mac:
+  target: dmg
 
+win:
   target:
-#    - target: "nsis"
-#      arch:
-#        - x64
-#        - ia32
+    - target: "nsis"
+      arch:
+        - x64
+        - ia32
     - target: "portable"
       arch:
         - x64
@@ -27,3 +26,6 @@ win:
 
 nsis:
   deleteAppDataOnUninstall: true
+
+directories:
+  output: "release"

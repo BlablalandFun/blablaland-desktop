@@ -1,5 +1,5 @@
 .DS_Store
-dist/
+release/
 node_modules/
 thumbs.db
 .idea/
