@@ -1,5 +1,5 @@
 appId: "fun.blablaland.desktop"
-productName: Blablaland
+productName: "Blablaland Desktop"
 
 files:
   - "!plugins/"
@@ -15,14 +15,16 @@ mac:
 
 win:
   target:
-    - target: "nsis"
-      arch:
-        - x64
-        - ia32
+#    - target: "nsis"
+#      arch:
+#        - x64
+#        - ia32
     - target: "portable"
       arch:
         - x64
         - ia32
+  portable:
+    - "artifactName": "blablaland-desktop.exe"
 
 nsis:
   deleteAppDataOnUninstall: true
