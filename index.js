@@ -1,6 +1,6 @@
 'use strict'
 
-import { app, BrowserWindow } from 'electron'
+const { app, BrowserWindow } = require('electron');
 
 const isDevelopment = process.env.NODE_ENV !== 'production'
 
