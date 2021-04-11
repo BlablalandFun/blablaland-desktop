@@ -3,6 +3,8 @@
 const { app, BrowserWindow, Menu } = require('electron');
 const path = require('path');
 
+const partition = 'persist:blablaland';
+
 let window;
 function createWindow() {
   window = new BrowserWindow({
@@ -11,8 +13,8 @@ function createWindow() {
     show: false,
     autoHideMenuBar: true,
     webPreferences: {
-        plugins: true,
-        partition: 'persist:blablaland'
+      partition,
+      devTools: false,
     }
   });
 
@@ -20,16 +22,14 @@ function createWindow() {
 
   window.once('ready-to-show', () => window.show());
 
-  // Context menu
+  // Menu contextuel
   const menu = Menu.buildFromTemplate([
     { role: 'reload', label: 'Rafraîchir la page' },
     { type: 'separator' },
     { role: 'zoomIn', label: 'Zoom en avant' },
     { role: 'zoomOut', label: 'Zoom en arrière' },
-    { role: 'resetZoom', label: 'Réinitialiser le zoom'},
+    { role: 'resetZoom', label: 'Réinitialiser le zoom' },
   ]);
-
-  // Menu.setApplicationMenu(menu);
 
   window.webContents.on('context-menu', (e, params) => {
     menu.popup(window, params.x, params.y)
