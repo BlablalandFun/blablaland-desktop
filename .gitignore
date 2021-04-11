@@ -1,5 +1,2 @@
-.DS_Store
 release/
 node_modules/
-thumbs.db
-.idea/

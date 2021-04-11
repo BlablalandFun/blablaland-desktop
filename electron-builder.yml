@@ -3,7 +3,6 @@ productName: "Blablaland Desktop"
 
 files:
   - "!plugins/"
-  - "main.js"
 
 extraResources:
   - from: "plugins/${os}/${arch}"
