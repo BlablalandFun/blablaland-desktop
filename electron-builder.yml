@@ -23,8 +23,6 @@ win:
       arch:
         - x64
         - ia32
-  portable:
-    - "artifactName": "blablaland-desktop.exe"
 
 nsis:
   deleteAppDataOnUninstall: true
