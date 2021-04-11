@@ -11,7 +11,8 @@ function createWindow() {
     show: false,
     autoHideMenuBar: true,
     webPreferences: {
-        plugins: true
+        plugins: true,
+        partition: 'persist:blablaland'
     }
   });
 
