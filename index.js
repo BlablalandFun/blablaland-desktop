@@ -6,10 +6,10 @@ const path = require('path');
 let window;
 function createWindow() {
   window = new BrowserWindow({
-    fullscreen: true,
+    // fullscreen: true,
     useContentSize: true,
     show: false,
-    // autoHideMenuBar: true,
+    autoHideMenuBar: true,
     webPreferences: {
         plugins: true
     }
@@ -27,6 +27,8 @@ function createWindow() {
     { role: 'zoomOut', label: 'Zoom en arrière' },
     { role: 'resetZoom', label: 'Réinitialiser le zoom'},
   ]);
+
+  // Menu.setApplicationMenu(menu);
 
   window.webContents.on('context-menu', (e, params) => {
     menu.popup(window, params.x, params.y)
