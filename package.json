@@ -1,16 +1,20 @@
 {
   "name": "blablaland-desktop",
-  "version": "0.0.2",
+  "version": "0.0.7",
+  "description": "Version bureau du jeu Blablaland (inclus Flash Player)",
+  "author": "Blablaland.fun",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yovach/blablaland-desktop"
+  },
   "scripts": {
-    "dev": "electron-webpack dev",
-    "pack": "electron-builder --dir",
-    "dist": "electron-builder",
+    "pack": "electron-builder -p never",
     "release": "electron-builder"
   },
   "dependencies": {},
   "devDependencies": {
-    "electron": "^11.3.0",
-    "electron-builder": "^22.9.1"
+    "electron": "~11.4.2",
+    "electron-builder": "^22.10.5"
   }
 }

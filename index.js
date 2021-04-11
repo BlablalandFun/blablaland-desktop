@@ -1,51 +1,74 @@
 'use strict'
 
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, Menu } = require('electron');
+const path = require('path');
 
-const isDevelopment = process.env.NODE_ENV !== 'production'
+const partition = 'persist:blablaland';
 
-// global reference to mainWindow (necessary to prevent window from being garbage collected)
-let mainWindow
+let window;
+function createWindow() {
+  window = new BrowserWindow({
+    // fullscreen: true,
+    useContentSize: true,
+    show: false,
+    autoHideMenuBar: true,
+    webPreferences: {
+      partition,
+      devTools: false,
+    }
+  });
 
-function createMainWindow() {
-  const window = new BrowserWindow({ webPreferences: { nodeIntegration: true } })
+  window.loadURL("https://blablaland.fun/IY7gDz6afMRKasNupDMDmRWCtXbrsRf1s6sjwScRRVfgMsH5wm2QWIcp8SsgVeRjw6uksNo1WqsHebRFVojVBmlZoDD3spwPXLBaC3nkTrWMU4Q4Cg3K7t3jtGL0Iojb6TW4GxlBZ0dj2TWVGTF8Tawyv4WFXanzUA3VJ1RH9s8opnSUr8Xb2MbPhooxOZfFlETb7ijc");
 
-  if (isDevelopment) {
-    window.loadURL(`http://local.blablaland.fun/`)
-  } else {
-    window.loadURL("https://blablaland.fun/IY7gDz6afMRKasNupDMDmRWCtXbrsRf1s6sjwScRRVfgMsH5wm2QWIcp8SsgVeRjw6uksNo1WqsHebRFVojVBmlZoDD3spwPXLBaC3nkTrWMU4Q4Cg3K7t3jtGL0Iojb6TW4GxlBZ0dj2TWVGTF8Tawyv4WFXanzUA3VJ1RH9s8opnSUr8Xb2MbPhooxOZfFlETb7ijc")
-  }
+  window.once('ready-to-show', () => window.show());
 
-  window.on('closed', () => {
-    mainWindow = null
+  // Menu contextuel
+  const menu = Menu.buildFromTemplate([
+    { role: 'reload', label: 'Rafraîchir la page' },
+    { type: 'separator' },
+    { role: 'zoomIn', label: 'Zoom en avant' },
+    { role: 'zoomOut', label: 'Zoom en arrière' },
+    { role: 'resetZoom', label: 'Réinitialiser le zoom' },
+  ]);
+
+  window.webContents.on('context-menu', (e, params) => {
+    menu.popup(window, params.x, params.y)
   })
-
-  window.webContents.on('devtools-opened', () => {
-    window.focus()
-    setImmediate(() => {
-      window.focus()
-    })
-  })
-
-  return window
 }
 
-// quit application when all windows are closed
-app.on('window-all-closed', () => {
-  // on macOS it is common for applications to stay open until the user explicitly quits
-  if (process.platform !== 'darwin') {
-    app.quit()
-  }
-})
+const gotTheLock = app.requestSingleInstanceLock()
 
-app.on('activate', () => {
-  // on macOS it is common to re-create a window even after all windows have been closed
-  if (mainWindow === null) {
-    mainWindow = createMainWindow()
-  }
-})
+if (!gotTheLock) {
+  app.quit()
+} else {
+  // Setup the Flash Player plugin
+  let pluginName
 
-// create main BrowserWindow when electron is ready
-app.on('ready', () => {
-  mainWindow = createMainWindow()
-})
+  switch (process.platform) {
+    case 'win32':
+      pluginName = 'pepflashplayer.dll'
+      break
+    case 'darwin':
+      pluginName = 'PepperFlashPlayer.plugin'
+  }
+
+  app.commandLine.appendSwitch('ppapi-flash-path', path.join(process.resourcesPath, 'plugins', pluginName))
+  app.commandLine.appendSwitch('ppapi-flash-version', '32.0.0.363')
+
+  // Create the application
+  app.on('second-instance', () => window.focus())
+
+  app.on('window-all-closed', () => {
+    if (process.platform !== 'darwin') {
+      app.quit();
+    }
+  });
+
+  app.on('activate', () => {
+    if (!window) {
+      createWindow();
+    }
+  })
+
+  app.whenReady().then(createWindow);
+}
