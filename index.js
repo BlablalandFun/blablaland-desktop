@@ -15,6 +15,7 @@ function createWindow() {
     webPreferences: {
       partition,
       devTools: false,
+      plugins: true,
     }
   });
 
