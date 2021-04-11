@@ -6,6 +6,7 @@ const path = require('path');
 let window;
 function createWindow() {
   window = new BrowserWindow({
+    fullscreen: true,
     useContentSize: true,
     show: false,
     // autoHideMenuBar: true,
@@ -20,13 +21,11 @@ function createWindow() {
 
   // Context menu
   const menu = Menu.buildFromTemplate([
-    { role: 'reload' },
+    { role: 'reload', label: 'Rafraîchir la page' },
     { type: 'separator' },
-    { role: 'zoomIn' },
-    { role: 'zoomOut' },
-    { role: 'resetZoom' },
-    { type: 'separator' },
-    { role: 'quit' }
+    { role: 'zoomIn', label: 'Zoom en avant' },
+    { role: 'zoomOut', label: 'Zoom en arrière' },
+    { role: 'resetZoom', label: 'Réinitialiser le zoom'},
   ]);
 
   window.webContents.on('context-menu', (e, params) => {
