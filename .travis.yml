@@ -7,11 +7,19 @@ matrix:
       env:
         - ELECTRON_CACHE=$HOME/.cache/electron
         - ELECTRON_BUILDER_CACHE=$HOME/.cache/electron-builder
-
-    - os: linux
-      services: docker
+    - os: windows
       language: node_js
       node_js: "14"
+      env:
+        - ELECTRON_CACHE=$HOME/.cache/electron
+        - ELECTRON_BUILDER_CACHE=$HOME/.cache/electron-builder
+    # - os: linux
+    #   services: docker
+    #   language: node_js
+    #   node_js: "14"
+    #   env:
+    #     - ELECTRON_CACHE=$HOME/.cache/electron
+    #     - ELECTRON_BUILDER_CACHE=$HOME/.cache/electron-builder
 
 cache:
   directories:
@@ -23,8 +31,6 @@ script:
   - |
     if [ "$TRAVIS_OS_NAME" == "linux" ]; then
       docker run --rm \
-        -e ELECTRON_CACHE="/root/.cache/electron" \
-        -e ELECTRON_BUILDER_CACHE="/root/.cache/electron-builder" \
         -e GH_TOKEN=$GH_TOKEN \
         -v ${PWD}:/project \
         -v ~/.cache/electron:/root/.cache/electron \
