@@ -8,7 +8,9 @@
     "dist": "electron-builder",
     "release": "electron-builder"
   },
-  "dependencies": {},
+  "dependencies": {
+    "webpack": "^5.31.2"
+  },
   "devDependencies": {
     "electron": "^11.3.0",
     "electron-builder": "^22.9.1",
