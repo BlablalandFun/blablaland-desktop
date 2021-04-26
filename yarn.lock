@@ -662,7 +662,7 @@ ejs@^3.1.6:
   dependencies:
     jake "^10.6.1"
 
-electron-builder@^22.9.1:
+electron-builder@^22.10.5:
   version "22.10.5"
   resolved "https://registry.yarnpkg.com/electron-builder/-/electron-builder-22.10.5.tgz#03b156b93e6012609027c3aaa69201a3ad21e454"
   integrity sha512-0q/289UUJUhRou6lZKDz/wzK6WprIQ6VXMTmaI+w9qXvSNugPC9UA5s2zXInOkjZOvO/xKnjeyiavrVSHYF3tA==
@@ -696,10 +696,10 @@ electron-publish@22.10.5:
     lazy-val "^1.0.4"
     mime "^2.5.0"
 
-electron@^11.3.0:
-  version "11.4.2"
-  resolved "https://registry.yarnpkg.com/electron/-/electron-11.4.2.tgz#02005d9f5d77ea6485efeffdb5c5433c769ddda4"
-  integrity sha512-P0PRLH7cXp8ZdpA9yVPe7jRVM+QeiAtsadqmqS6XY3AYrsH+7bJnVrNuw6p/fcmp+b/UxWaCexobqQpyFJ5Qkw==
+electron@~11.4.2:
+  version "11.4.3"
+  resolved "https://registry.yarnpkg.com/electron/-/electron-11.4.3.tgz#74319635417c24fd19e31cfce5a39c8792e4014b"
+  integrity sha512-RhCWJqiYK5oIRGOheilhg/nngCgk0fPgaf00KvbxorlvFZAz8OeMT5ShCpVsMSoyYhk4XEnn4orRly5ltaFYJg==
   dependencies:
     "@electron/get" "^1.0.1"
     "@types/node" "^12.0.12"
