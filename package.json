@@ -12,7 +12,6 @@
     "pack": "electron-builder -p never",
     "release": "electron-builder"
   },
-  "dependencies": {},
   "devDependencies": {
     "electron": "~11.4.2",
     "electron-builder": "^22.10.5"
