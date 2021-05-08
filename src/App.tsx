@@ -30,7 +30,7 @@ function App() {
         if (/electron/i.test(navigator.userAgent)) {
           // c'est une application electron
         } else {
-          location.replace("");
+          window.location.replace("https://blablaland.fun/");
         }
         // window.loadUrl()
       }

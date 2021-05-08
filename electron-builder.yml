@@ -4,6 +4,14 @@ productName: "Blablaland Desktop"
 files:
   - "!plugins/"
 
+directories:
+  app: "src"
+  buildResources: "assets"
+  output: "release"
+
+extraResources:
+  - "./assets/**"
+
 extraResources:
   - from: "plugins/${os}/${arch}"
     to: "plugins"
