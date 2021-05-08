@@ -1,19 +1,57 @@
 {
   "name": "blablaland-desktop",
-  "version": "0.0.10",
   "description": "Version bureau du jeu Blablaland (inclus Flash Player)",
   "author": "Blablaland.fun",
+  "version": "1.0.0",
   "license": "MIT",
+  "main": "public/electron.js",
+  "homepage": "./",
   "repository": {
     "type": "git",
     "url": "https://github.com/yovach/blablaland-desktop"
   },
   "scripts": {
-    "pack": "electron-builder -p never",
-    "release": "electron-builder"
+    "react-start": "craco start",
+    "react-build": "craco build",
+    "electron-release": "electron-builder",
+    "electron-build": "electron-builder -p never",
+    "electron-dev": "concurrently \"yarn react-start\" \"wait-on http://localhost:3000 && electron .\""
   },
   "devDependencies": {
-    "electron": "~11.4.2",
-    "electron-builder": "^22.10.5"
+    "@types/react": "^17.0.5",
+    "@types/react-dom": "^17.0.3",
+    "autoprefixer": "^9.8.6",
+    "concurrently": "^6.1.0",
+    "electron": "^11.4.6",
+    "electron-builder": "^22.11.1",
+    "gulp": "^4.0.2",
+    "postcss": "^7.0.35",
+    "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.1.2",
+    "wait-on": "^5.3.0"
+  },
+  "dependencies": {
+    "@craco/craco": "^6.1.2",
+    "electron-is-dev": "^2.0.0",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-scripts": "^4.0.3",
+    "typescript": "^4.2.4"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }

@@ -3,12 +3,26 @@ productName: "Blablaland Desktop"
 
 files:
   - "!plugins/"
+  - "build/**/*"
+  - "node_modules/**/*"
+  - package.json
+
+directories:
+  # app: "build"
+  buildResources: "assets"
+  output: "release"
 
 extraResources:
+  - "./assets/**"
   - from: "plugins/${os}/${arch}"
     to: "plugins"
     filter:
       - "**/*"
+
+extraMetadata:
+  main: "build/electron.js"
+
+extends: null
 
 mac:
   target: dmg
@@ -26,6 +40,3 @@ win:
 
 nsis:
   deleteAppDataOnUninstall: true
-
-directories:
-  output: "release"

@@ -2,12 +2,15 @@
 
 const { app, BrowserWindow, Menu } = require('electron');
 const path = require('path');
+const isDev = require('electron-is-dev');
 
 const partition = 'persist:blablaland';
 
-let window;
+let window = null;
 function createWindow() {
   window = new BrowserWindow({
+    width: 1280,
+    height: 720,
     // fullscreen: true,
     useContentSize: true,
     show: false,
@@ -19,7 +22,7 @@ function createWindow() {
     },
   });
   
-  window.loadURL("https://blablaland.fun/IY7gDz6afMRKasNupDMDmRWCtXbrsRf1s6sjwScRRVfgMsH5wm2QWIcp8SsgVeRjw6uksNo1WqsHebRFVojVBmlZoDD3spwPXLBaC3nkTrWMU4Q4Cg3K7t3jtGL0Iojb6TW4GxlBZ0dj2TWVGTF8Tawyv4WFXanzUA3VJ1RH9s8opnSUr8Xb2MbPhooxOZfFlETb7ijc");
+  window.loadURL(isDev ? 'http://localhost:3000' : `file://${path.join(__dirname, '../build/index.html')}`);
   
   window.once('ready-to-show', () => {
     window.webContents.setZoomFactor(1.0);
@@ -41,13 +44,12 @@ function createWindow() {
 }
 
 const gotTheLock = app.requestSingleInstanceLock()
-
 if (!gotTheLock) {
   app.quit()
 } else {
-  // Setup the Flash Player plugin
-  let pluginName
 
+  /** On ajoute le plugin "Flash Player" à l'application */
+  let pluginName;
   switch (process.platform) {
     case 'win32':
       pluginName = 'pepflashplayer.dll'
@@ -60,19 +62,29 @@ if (!gotTheLock) {
   app.commandLine.appendSwitch('ppapi-flash-version', '32.0.0.363')
 
   // Create the application
-  app.on('second-instance', () => window.focus())
-
-  app.on('window-all-closed', () => {
-    if (process.platform !== 'darwin') {
-      app.quit();
+  app.on('second-instance', () => {
+    if (window) {
+      if (window.isMinimized()) {
+        window.restore();
+      }
+      window.focus();
     }
-  });
+  })
 
+  
   app.on('activate', () => {
     if (!window) {
       createWindow();
     }
   })
-
-  app.whenReady().then(createWindow);
+  
+  app.on('ready', () => {
+    createWindow();
+  });
+  
+  app.on('window-all-closed', () => {
+    if (process.platform !== 'darwin') {
+      app.quit();
+    }
+  });
 }
