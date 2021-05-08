@@ -3,6 +3,8 @@ productName: "Blablaland Desktop"
 
 files:
   - "!plugins/"
+  - "build/**/*"
+  - "node_modules/**/*"
 
 directories:
   app: "build"

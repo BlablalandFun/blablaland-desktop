@@ -15,7 +15,7 @@
     "pack": "electron-builder -p never",
     "release": "electron-builder",
     "electron-dev": "concurrently \"BROWSER=none yarn start\" \"wait-on http://localhost:3000 && electron .\"",
-    "electron-dev-win": "concurrently \"yarn start\" \"wait-on http://localhost:3000 ; electron .\""
+    "electron-dev-win": "concurrently \"yarn start\" \"wait-on http://localhost:3000 && electron .\""
   },
   "devDependencies": {
     "@types/react": "^17.0.5",

@@ -56,9 +56,7 @@ function App() {
         if (/electron/i.test(navigator.userAgent)) {
           // c'est une application electron
         } else {
-          // window.location.replace("https://blablaland.fun/");
         }
-        // window.loadUrl()
       } else if (response.error) {
         setError(response.error);
       } else {
