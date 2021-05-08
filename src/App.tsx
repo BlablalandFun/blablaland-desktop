@@ -3,8 +3,8 @@ import logo from './icon.png';
 import './index.css';
 // import thunderbolt from './skate.png';
 
-const AUTH_URL = "http://blablaland.localhost/auth";
-const API_URL = "http://localhost:12500";
+const AUTH_URL = "https://blablaland.fun/auth";
+const API_URL = "https://api.blablaland.fun";
 
 type BlablalandAuthAPI = {
   has2FA?: boolean;
