@@ -15,7 +15,7 @@
     "react-build": "craco build",
     "electron-release": "electron-builder",
     "electron-build": "electron-builder -p never",
-    "electron-dev": "concurrently \"yarn start\" \"wait-on http://localhost:3000 && electron .\""
+    "electron-dev": "concurrently \"yarn react-start\" \"wait-on http://localhost:3000 && electron .\""
   },
   "devDependencies": {
     "@types/react": "^17.0.5",
