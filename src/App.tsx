@@ -3,7 +3,8 @@ import logo from './icon.png';
 import './index.css';
 // import thunderbolt from './skate.png';
 
-const API_URL = "http://localhost:12500/auth";
+const AUTH_URL = "http://blablaland.localhost/auth";
+const API_URL = "http://localhost:12500";
 
 type BlablalandAuthAPI = {
   has2FA?: boolean;
@@ -22,21 +23,21 @@ function App() {
 
     // @ts-ignore
     const { username: { value: username }, password: { value: password }, code2FA } = evt.target;
-    
+
     setLoading(true);
     setError(undefined);
     try {
-      
+
       const formFields = {
-        username, password, 
+        username, password,
       };
-      
+
       if (code2FA) {
         // @ts-ignore
         formFields['code2FA'] = code2FA.value;
       }
 
-      const req = await fetch(API_URL, {
+      const req = await fetch(API_URL + "/auth", {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -46,16 +47,11 @@ function App() {
 
       const response: BlablalandAuthAPI = await req.json();
       if (req.status === 200) {
-
         if (response.token) {
-
+          window.localStorage.setItem('ACCESS_TOKEN', response.token);
+          window.location.href = AUTH_URL + "?jwt=" + response.token;
         } else if (response.has2FA) {
           set2FaEnabled(response.has2FA!)
-        }
-
-        if (/electron/i.test(navigator.userAgent)) {
-          // c'est une application electron
-        } else {
         }
       } else if (response.error) {
         setError(response.error);
@@ -68,6 +64,30 @@ function App() {
       setLoading(false);
     }
   };
+
+
+  /** S'exécute au chargement de la page (une seule fois) */
+  React.useEffect(() => {
+    const localStorage = window.localStorage;
+    if (localStorage) {
+      const accessToken = localStorage.getItem('ACCESS_TOKEN');
+      if (accessToken) {
+        fetch(API_URL + "/check-auth", {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ accessToken }),
+          method: 'POST',
+        }).then((val) => val.json()).then((response) => {
+          if (response.valid) {
+            window.location.href = AUTH_URL + "?jwt=" + accessToken;
+          } else {
+            window.localStorage.removeItem('ACCESS_TOKEN');
+          }
+        });
+      }
+    }
+  }, []);
 
   return (
     <div className="bg-gray-900 flex flex-col h-screen w-screen">
