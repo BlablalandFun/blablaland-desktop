@@ -2,7 +2,7 @@
 
 const { app, BrowserWindow, Menu } = require('electron');
 const path = require('path');
-const isDev = require('electron-is-dev');
+// const isDev = require('electron-is-dev');
 
 const partition = 'persist:blablaland';
 
@@ -20,8 +20,7 @@ function createWindow() {
     },
   });
   
-  window.loadURL(isDev ? 'http://localhost:3000' : `file://${path.join(__dirname, '../build/index.html')}`);
-  // window.loadURL("https://blablaland.fun/IY7gDz6afMRKasNupDMDmRWCtXbrsRf1s6sjwScRRVfgMsH5wm2QWIcp8SsgVeRjw6uksNo1WqsHebRFVojVBmlZoDD3spwPXLBaC3nkTrWMU4Q4Cg3K7t3jtGL0Iojb6TW4GxlBZ0dj2TWVGTF8Tawyv4WFXanzUA3VJ1RH9s8opnSUr8Xb2MbPhooxOZfFlETb7ijc");
+  window.loadURL(`file://${path.join(__dirname, '../build/index.html')}`);
   
   window.once('ready-to-show', () => {
     window.webContents.setZoomFactor(1.0);

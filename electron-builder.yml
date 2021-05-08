@@ -5,9 +5,10 @@ files:
   - "!plugins/"
   - "build/**/*"
   - "node_modules/**/*"
+  - package.json
 
 directories:
-  app: "build"
+  # app: "build"
   buildResources: "assets"
   output: "release"
 
@@ -17,6 +18,11 @@ extraResources:
     to: "plugins"
     filter:
       - "**/*"
+
+extraMetadata:
+  main: "build/electron.js"
+
+extends: null
 
 mac:
   target: dmg
