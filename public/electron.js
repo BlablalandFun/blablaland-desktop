@@ -6,7 +6,7 @@ const isDev = require('electron-is-dev');
 
 const partition = 'persist:blablaland';
 
-let window;
+let window = null;
 function createWindow() {
   window = new BrowserWindow({
     width: 1280,
@@ -44,13 +44,12 @@ function createWindow() {
 }
 
 const gotTheLock = app.requestSingleInstanceLock()
-
 if (!gotTheLock) {
   app.quit()
 } else {
-  // Setup the Flash Player plugin
-  let pluginName
 
+  /** On ajoute le plugin "Flash Player" à l'application */
+  let pluginName;
   switch (process.platform) {
     case 'win32':
       pluginName = 'pepflashplayer.dll'
@@ -63,19 +62,29 @@ if (!gotTheLock) {
   app.commandLine.appendSwitch('ppapi-flash-version', '32.0.0.363')
 
   // Create the application
-  app.on('second-instance', () => window.focus())
-
-  app.on('window-all-closed', () => {
-    if (process.platform !== 'darwin') {
-      app.quit();
+  app.on('second-instance', () => {
+    if (window) {
+      if (window.isMinimized()) {
+        window.restore();
+      }
+      window.focus();
     }
-  });
+  })
 
+  
   app.on('activate', () => {
     if (!window) {
       createWindow();
     }
   })
-
-  app.whenReady().then(createWindow);
+  
+  app.on('ready', () => {
+    createWindow();
+  });
+  
+  app.on('window-all-closed', () => {
+    if (process.platform !== 'darwin') {
+      app.quit();
+    }
+  });
 }
