@@ -28,7 +28,16 @@ const buildElectron = (cb) => {
     });
 };
 
-exports.release = gulp.series(buildReact, copyPkg, buildElectron);
+const releaseElectron = (cb) => {
+    cp.exec("npm run electron-release", (err, out) => {
+        if (err) {
+            console.error(err.message);
+        }
+
+        cb();
+    });
+};
 
 
 exports.build = gulp.series(buildReact, copyPkg, buildElectron);
+exports.release = gulp.series(buildReact, copyPkg, releaseElectron);
