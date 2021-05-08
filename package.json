@@ -2,7 +2,7 @@
   "name": "blablaland-desktop",
   "description": "Version bureau du jeu Blablaland (inclus Flash Player)",
   "author": "Blablaland.fun",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "license": "MIT",
   "main": "public/electron.js",
   "homepage": "./",
