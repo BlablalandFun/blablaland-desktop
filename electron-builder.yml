@@ -5,14 +5,12 @@ files:
   - "!plugins/"
 
 directories:
-  app: "src"
+  app: "build"
   buildResources: "assets"
   output: "release"
 
 extraResources:
   - "./assets/**"
-
-extraResources:
   - from: "plugins/${os}/${arch}"
     to: "plugins"
     filter:
@@ -34,7 +32,3 @@ win:
 
 nsis:
   deleteAppDataOnUninstall: true
-
-directories:
-  output: "release"
-  app: "src"

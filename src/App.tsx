@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import logo from './icon.png';
+import './index.css';
 // import thunderbolt from './skate.png';
 
 const API_URL = "http://localhost:12500/auth";
