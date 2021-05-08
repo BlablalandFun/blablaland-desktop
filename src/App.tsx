@@ -5,49 +5,69 @@ import './index.css';
 
 const API_URL = "http://localhost:12500/auth";
 
+type BlablalandAuthAPI = {
+  has2FA?: boolean;
+  token?: string;
+  error?: string;
+}
+
 function App() {
 
   const [error, setError] = useState<string | undefined>(undefined);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setLoading] = useState(false);
+  const [is2FaEnabled, set2FaEnabled] = useState(false);
 
   const onSubmitForm = async (evt: React.FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
 
     // @ts-ignore
-    const { username: { value: username }, password: { value: password } } = evt.target;
-
-    setIsLoading(true);
+    const { username: { value: username }, password: { value: password }, code2FA } = evt.target;
+    
+    setLoading(true);
     setError(undefined);
     try {
+      
+      const formFields = {
+        username, password, 
+      };
+      
+      if (code2FA) {
+        // @ts-ignore
+        formFields['code2FA'] = code2FA.value;
+      }
+
       const req = await fetch(API_URL, {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          username, password,
-        }),
+        body: JSON.stringify(formFields),
         method: 'POST',
       });
 
-      const response = await req.json();
+      const response: BlablalandAuthAPI = await req.json();
       if (req.status === 200) {
+
         if (response.token) {
-          if (/electron/i.test(navigator.userAgent)) {
-            // c'est une application electron
-          } else {
-            window.location.replace("https://blablaland.fun/");
-          }
-          // window.loadUrl()
+
+        } else if (response.has2FA) {
+          set2FaEnabled(response.has2FA!)
         }
-        // console.log('connecté !')
-      } else {
+
+        if (/electron/i.test(navigator.userAgent)) {
+          // c'est une application electron
+        } else {
+          // window.location.replace("https://blablaland.fun/");
+        }
+        // window.loadUrl()
+      } else if (response.error) {
         setError(response.error);
-        // console.log('il y a un problème')
+      } else {
+        setError("Une erreur inattendue est survenue.")
       }
-      setIsLoading(false);
+      setLoading(false);
     } catch (err) {
       setError("Nos serveurs de connexion sont inactifs :(");
-      setIsLoading(false);
+      setLoading(false);
     }
   };
 
@@ -78,13 +98,21 @@ function App() {
             }
             <div className="flex flex-col gap-y-2">
               <div className="flex flex-row items-center gap-x-6">
-                <label className="text-white text-base w-32">Identifiant :</label>
+                <label className="text-white text-base w-28">Identifiant :</label>
                 <input name="username" type="text" className="mt-2 rounded-lg bg-gray-100 px-2 py-1" />
               </div>
               <div className="flex flex-row items-center gap-x-6">
-                <label className="text-white text-base w-32">Mot de passe :</label>
+                <label className="text-white text-base w-28">Mot de passe :</label>
                 <input name="password" type="password" className="mt-2 rounded-lg bg-gray-100 px-2 py-1" />
               </div>
+              {
+                is2FaEnabled && (
+                  <div className="flex flex-row items-center gap-x-6">
+                    <label className="text-white text-base w-28" title="Code indiqué sur votre application d'authentification à deux facteurs">Code 2FA :</label>
+                    <input name="code2FA" type="text" className="mt-2 rounded-lg bg-white px-2 py-1" />
+                  </div>
+                )
+              }
             </div>
 
             <button type="submit" className="group mt-3 p-[2px] rounded-full bg-gradient-to-br from-yellow-400 hover:from-yellow-500 to-pink-400 hover:to-pink-500" disabled={isLoading}>
