@@ -44,13 +44,8 @@ function App() {
 
   return (
     <div className="bg-gray-900 flex flex-col h-screen w-screen">
-      <img src={logo} className="self-center my-8" alt="logo" height="196" width="196" />
+      <img src={logo} className="self-center mt-8 mb-12" alt="logo" height="196" width="196" />
 
-      <h1 className="mx-auto mb-10 flex flex-col text-center">
-        <span className="text-white text-md mb-1">Connectez-vous avec votre compte </span>
-
-        <span className="bg-clip-text text-transparent text-2xl font-bold bg-gradient-to-br from-blue-500 to-indigo-500 text-center uppercase">Blablaland.fun</span>
-      </h1>
 
       <main className="h-full self-center">
 
@@ -58,6 +53,11 @@ function App() {
 
 
           <form onSubmit={onSubmitForm} className="flex flex-col px-8 py-6 gap-y-4 bg-gray-900 rounded-lg">
+            <h1 className="mx-auto mb-10 flex flex-col text-center">
+              <span className="text-white text-md mb-1">Connectez-vous avec votre compte </span>
+
+              <span className="bg-clip-text text-transparent text-2xl font-bold bg-gradient-to-r from-blue-400 to-indigo-400 text-center uppercase">Blablaland.fun</span>
+            </h1>
             {
               error && (
                 <div className="bg-red-200 text-center font-medium text-red-900 px-2 py-2 rounded flex flex-col">
@@ -67,17 +67,19 @@ function App() {
                 </div>
               )
             }
-            <div className="flex flex-col">
-              <label className="text-white text-base">Identifiant</label>
-              <input name="username" type="text" className="mt-2 rounded-lg bg-gray-100 px-2 py-1" />
-            </div>
-            <div className="flex flex-col">
-              <label className="text-white text-base">Mot de passe</label>
-              <input name="password" type="password" className="mt-2 rounded-lg bg-gray-100 px-2 py-1" />
+            <div className="flex flex-col gap-y-2">
+              <div className="flex flex-row items-center gap-x-6">
+                <label className="text-white text-base w-32">Identifiant :</label>
+                <input name="username" type="text" className="mt-2 rounded-lg bg-gray-100 px-2 py-1" />
+              </div>
+              <div className="flex flex-row items-center gap-x-6">
+                <label className="text-white text-base w-32">Mot de passe :</label>
+                <input name="password" type="password" className="mt-2 rounded-lg bg-gray-100 px-2 py-1" />
+              </div>
             </div>
 
-            <button type="submit" className="mt-3 p-[2px] rounded-full bg-gradient-to-br from-yellow-400 hover:from-yellow-500 to-pink-400 hover:to-pink-500">
-              <div className="px-3 py-2 uppercase font-bold text-sm rounded-full text-white bg-gray-900">
+            <button type="submit" className="mt-3 p-[2px] rounded-full bg-gradient-to-br from-yellow-400 hover:from-yellow-500 to-pink-400 hover:to-pink-500 group">
+              <div className="px-3 py-2 uppercase font-bold text-sm rounded-full text-white bg-gray-900 group-hover:bg-gray-900 group-hover:bg-opacity-95">
                 Confirmer
               </div>
             </button>
@@ -92,7 +94,7 @@ function App() {
           Blablaland.fun est un projet indépendant non lucratif
         </span>
         <span>
-          Nous ne sommes en aucun cas affilié ou approuvé par NIVEAU99 ou SUPER BLABLALAND
+          Nous ne sommes en aucun cas affilié ou approuvé par <b>NIVEAU99</b> ou <b>SUPER BLABLALAND</b>
         </span>
       </footer>
     </div>
