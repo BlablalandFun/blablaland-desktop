@@ -9,6 +9,8 @@
     "url": "https://github.com/yovach/blablaland-desktop"
   },
   "scripts": {
+    "start": "craco start",
+    "build": "craco build",
     "pack": "electron-builder -p never",
     "release": "electron-builder"
   },
