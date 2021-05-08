@@ -13,7 +13,7 @@
   "scripts": {
     "react-start": "craco start",
     "react-build": "craco build",
-    "electron-release": "electron-builder",
+    "release": "electron-builder",
     "electron-build": "electron-builder -p never",
     "electron-dev": "concurrently \"yarn react-start\" \"wait-on http://localhost:3000 && electron .\""
   },

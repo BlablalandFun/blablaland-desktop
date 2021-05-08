@@ -29,7 +29,7 @@ const buildElectron = (cb) => {
 };
 
 const releaseElectron = (cb) => {
-    cp.exec("npm run electron-release", (err, out) => {
+    cp.exec("npm run release", (err, out) => {
         if (err) {
             console.error(err.message);
         }
