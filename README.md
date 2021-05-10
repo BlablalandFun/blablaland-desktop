@@ -4,8 +4,13 @@
 
 C'est un "launcher" permettant de jouer à Blablaland à travers un logiciel qui contient le runtime **Flash Player**.
 
-
 Launcher basé sur celui de [Panfu Desktop](https://github.com/teampanfu/panfu-desktop) mais fortement modifié pour intégrer la page de connexion.
+
+
+## Jouer en solo / Tester le jeu
+
+Un autre développeur [@Feavy](https://github.com/Feavy) a modifié ce launcher pour y intégrer un serveur solo : [@Feavy/blablaland-singleplayer](https://github.com/feavy/blablaland-singleplayer)
+
 
 ## Installation 
 
