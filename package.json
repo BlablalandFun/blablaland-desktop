@@ -25,7 +25,7 @@
     "electron": "^11.4.6",
     "electron-builder": "^22.11.1",
     "gulp": "^4.0.2",
-    "postcss": "^7.0.35",
+    "postcss": "^8.2.10",
     "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.1.2",
     "wait-on": "^5.3.0"
   },
