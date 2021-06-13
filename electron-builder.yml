@@ -27,9 +27,6 @@ extends: null
 mac:
   target: dmg
 
-linux:
-  target: deb
-
 win:
   target:
     - target: "nsis"
