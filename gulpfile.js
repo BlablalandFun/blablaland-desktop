@@ -6,10 +6,10 @@ const buildReact = (cb) => {
     if (err) {
       console.error(err.message);
     }
+    console.log(out);
 
     cb();
   });
-  // cb();
 };
 
 const copyPkg = (cb) => {
@@ -24,6 +24,8 @@ const buildElectron = (cb) => {
       console.error(err.message);
     }
 
+    console.log(out);
+
     cb();
   });
 };
@@ -33,6 +35,8 @@ const releaseElectron = (cb) => {
     if (err) {
       console.error(err.message);
     }
+
+    console.log(out);
 
     cb();
   });
