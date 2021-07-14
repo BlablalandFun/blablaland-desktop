@@ -3,12 +3,15 @@
 const { app, BrowserWindow, Menu } = require("electron");
 const path = require("path");
 const isDev = require("electron-is-dev");
+const log = require("electron-log");
+const fs = require("fs");
 
 const partition = "persist:blablaland";
 
 let window = null;
 function createWindow() {
   window = new BrowserWindow({
+    title: "Blablaland",
     width: 1280,
     height: 720,
     // fullscreen: true,
@@ -17,8 +20,9 @@ function createWindow() {
     autoHideMenuBar: true,
     webPreferences: {
       partition,
-      devTools: false,
+      devTools: true,
       plugins: true,
+      contextIsolation: true,
     },
   });
 
@@ -65,13 +69,30 @@ if (!gotTheLock) {
       break;
   }
 
-  app.commandLine.appendSwitch(
-    "ppapi-flash-path",
-    path.join(process.resourcesPath, "plugins", pluginName)
-  );
-  app.commandLine.appendSwitch("ppapi-flash-version", "32.0.0.363");
+  if (!pluginName) {
+    log.error("Impossible de trouver le plugin de votre plateforme.");
+    app.quit();
+    return;
+  }
 
-  // Create the application
+  const pluginPath = path.join(process.resourcesPath, "plugins", pluginName);
+  if (!fs.existsSync(pluginPath)) {
+    log.error("Le plugin n'existe pas ou n'est pas trouvable.");
+    app.quit();
+    return;
+  }
+
+  // log.info("On vérifie si le plugin existe bien !");
+  // log.info("path plugin : " + pluginPath);
+
+  if (process.platform === "linux") {
+    app.commandLine.appendSwitch("no-sandbox");
+  }
+
+  // log.info("ok c'est good");
+  app.commandLine.appendSwitch("ppapi-flash-path", pluginPath);
+  app.commandLine.appendSwitch("disable-http-cache");
+
   app.on("second-instance", () => {
     if (window) {
       if (window.isMinimized()) {
@@ -96,4 +117,5 @@ if (!gotTheLock) {
       app.quit();
     }
   });
+  // });
 }
