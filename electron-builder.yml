@@ -3,12 +3,11 @@ productName: "Blablaland Desktop"
 
 files:
   - "!plugins/"
-  - "build/**/*"
+  - "dist/**/*"
   - "node_modules/**/*"
   - package.json
 
 directories:
-  # app: "build"
   buildResources: "assets"
   output: "release"
 
@@ -20,7 +19,7 @@ extraResources:
       - "**/*"
 
 extraMetadata:
-  main: "build/electron.js"
+  main: "dist/main.js"
 
 extends: null
 
@@ -37,9 +36,6 @@ linux:
       arch:
         - x64
         - ia32
-    - target: "snap"
-      arch:
-        - x64
 
 win:
   target:
