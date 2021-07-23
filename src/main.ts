@@ -10,37 +10,6 @@ if (!gotTheLock) {
   app.quit();
 }
 
-autoUpdater.on("update-available", () => {
-  dialog
-    .showMessageBox({
-      type: "info",
-      title: "Mises à jour",
-      message: "Mise à jour trouvée. Voulez-vous mettre à jour ?",
-      buttons: ["Oui", "Non"],
-    })
-    .then((buttonIndex) => {
-      autoUpdater.downloadUpdate();
-    });
-});
-
-autoUpdater.on("update-not-available", () => {
-  dialog.showMessageBox({
-    title: "Aucune nouvelle mise à jour",
-    message: "Vous êtes à jour.",
-  });
-});
-
-autoUpdater.on("update-downloaded", () => {
-  dialog
-    .showMessageBox({
-      title: "Mise à jour installée",
-      message: "Mise à jour installée, l'application va se fermer",
-    })
-    .then(() => {
-      setImmediate(() => autoUpdater.quitAndInstall());
-    });
-});
-
 let window: BrowserWindow | null = null;
 try {
   const { pluginName, pluginPath } = getPluginName();
@@ -68,11 +37,7 @@ try {
         window = createWindow();
       }
     });
-
-    log.transports.file.level = "debug";
-    autoUpdater.logger = log;
     autoUpdater.checkForUpdatesAndNotify();
-    autoUpdater.checkForUpdates();
   });
 
   app.on("window-all-closed", () => {
