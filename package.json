@@ -6,57 +6,30 @@
     "url": "https://blablaland.fun/",
     "email": "yovach.mail@gmail.com"
   },
-  "version": "1.0.1",
+  "version": "1.1.0",
   "license": "MIT",
-  "main": "public/electron.js",
+  "main": "dist/electron.js",
   "homepage": "./",
   "repository": {
     "type": "git",
     "url": "https://github.com/yovach/blablaland-desktop"
   },
   "scripts": {
-    "react-start": "craco start",
-    "react-build": "craco build",
-    "release": "electron-builder",
-    "electron-build": "electron-builder -p never",
-    "electron-dev": "concurrently \"yarn react-start\" \"wait-on http://localhost:3000 && electron .\""
+    "postinstall": "electron-builder install-app-deps",
+    "release": "electron-builder --publish always",
+    "build": "tsc",
+    "watch": "tsc -w",
+    "lint": "eslint -c .eslintrc -- ext .ts ./src",
+    "start": "npm run build && electron ./dist/main.js"
   },
   "devDependencies": {
-    "@types/react": "^17.0.5",
-    "@types/react-dom": "^17.0.3",
-    "autoprefixer": "^9.8.6",
-    "concurrently": "^6.1.0",
     "electron": "^11.4.6",
     "electron-builder": "^22.11.1",
-    "gulp": "^4.0.2",
-    "postcss": "^8.2.10",
-    "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.1.2",
-    "wait-on": "^5.3.0"
+    "typescript": "^4.3.5"
   },
   "dependencies": {
-    "@craco/craco": "^6.1.2",
     "electron-is-dev": "^2.0.0",
     "electron-log": "^4.3.5",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "react-scripts": "^4.0.3",
-    "typescript": "^4.2.4"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app"
-    ]
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+    "electron-updater": "^4.3.9"
   }
 }
