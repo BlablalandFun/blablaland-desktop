@@ -23,8 +23,8 @@ Installation du projet via **npm**
     
 ## Technologies utilisées
 
-**Launcher:** React, TailwindCSS\
-**CI/CD:** TravisCI
+**Launcher:** Electron.js\
+**CI/CD:** Github Actions
 
   
 ## FAQ
