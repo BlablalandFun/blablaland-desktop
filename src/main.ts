@@ -1,9 +1,9 @@
 "use strict";
 
-import { app, BrowserWindow, dialog } from "electron";
+import { app, BrowserWindow } from "electron";
 import log from "electron-log";
-import { createWindow, getPluginName } from "./utils";
 import { autoUpdater } from "electron-updater";
+import { createWindow, getPluginName } from "./utils";
 
 const gotTheLock = app.requestSingleInstanceLock();
 if (!gotTheLock) {

@@ -42,14 +42,13 @@ export function createWindow() {
     show: false,
     autoHideMenuBar: true,
     webPreferences: {
-      partition: "persist:blablaland",
       devTools: true,
       plugins: true,
       contextIsolation: true,
     },
   });
 
-  window.loadURL("https://blablaland.fun/PrfLiCJDWpnskXvqm4M8");
+  window.loadURL("https://blablaland.fun/login");
 
   window.once("ready-to-show", () => {
     window.webContents.setZoomFactor(1.0);
