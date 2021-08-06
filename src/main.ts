@@ -33,7 +33,7 @@ try {
       }
     });
     app.on("activate", () => {
-      if (BrowserWindow.getAllWindows().length) {
+      if (BrowserWindow.getAllWindows().length === 0) {
         window = createWindow();
       }
     });
