@@ -20,7 +20,8 @@
     "build": "tsc",
     "watch": "tsc -w",
     "lint": "eslint -c .eslintrc -- ext .ts ./src",
-    "start": "npm run build && electron ./dist/main.js"
+    "start": "npm run build && electron ./dist/main.js",
+    "pack": "npm run build && electron-builder -p never"
   },
   "devDependencies": {
     "electron": "^11.4.6",
