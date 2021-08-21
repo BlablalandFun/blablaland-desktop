@@ -12,6 +12,15 @@ Launcher basé sur celui de [Panfu Desktop](https://github.com/teampanfu/panfu-d
 Un autre développeur [@Feavy](https://github.com/Feavy) a modifié ce launcher pour y intégrer un serveur solo : [@Feavy/blablaland-singleplayer](https://github.com/feavy/blablaland-singleplayer)
 
 
+## Lancer le launcher sur une autre URL
+
+```
+[executable] --target={URL}
+```
+
+Exemple (Windows): ``Blablaland-Desktop-1.1.2.exe --target=http://127.0.0.1/``
+
+
 ## Installation 
 
 Installation du projet via **npm**
@@ -20,6 +29,13 @@ Installation du projet via **npm**
   git clone https://github.com/Yovach/blablaland-desktop.git
   npm install
 ```
+
+Build le launcher
+
+```bash 
+  npm run pack
+```
+
     
 ## Technologies utilisées
 
