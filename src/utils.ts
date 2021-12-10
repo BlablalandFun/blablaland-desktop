@@ -1,39 +1,44 @@
-import { BrowserWindow, Menu, app } from "electron";
-import path from "path";
+import { app, BrowserWindow, Menu } from "electron";
+import electronIsDev from "electron-is-dev";
 import fs from "fs";
+import path from "path";
 
-/** Récupèrer le nom du plugin Flash */
-export function getPluginName() {
-  let pluginName: string | null = null;
+function getPluginName(): string {
   switch (process.platform) {
     case "win32":
-      pluginName = "pepflashplayer.dll";
-      break;
+      return "pepflashplayer.dll";
     case "darwin":
-      pluginName = "PepperFlashPlayer.plugin";
-      break;
+      return "PepperFlashPlayer.plugin";
     case "linux":
-      pluginName = "libpepflashplayer.so";
-      break;
+      return "libpepflashplayer.so";
+    default:
+      throw new Error("Impossible de trouver le plugin de votre plateforme.");
   }
+}
 
-  if (!pluginName) {
-    throw new Error("Impossible de trouver le plugin de votre plateforme.");
-  }
+function getPluginPath(pluginName: string): string {
+  const pluginPath = electronIsDev
+    ? path.join("plugins", process.platform, process.arch, pluginName)
+    : path.join(process.resourcesPath, "plugins", pluginName);
 
-  const pluginPath = path.join(process.resourcesPath, "plugins", pluginName);
   if (!fs.existsSync(pluginPath)) {
-    console.log(pluginPath)
+    console.log(pluginPath);
     throw new Error("Le plugin n'existe pas ou n'est pas trouvable.");
   }
 
+  return pluginPath;
+}
+
+export function getPlugin(): { pluginName: string; pluginPath: string } {
+  const pluginName = getPluginName();
+
   return {
     pluginName,
-    pluginPath,
+    pluginPath: getPluginPath(pluginName),
   };
 }
 
-export function listenContextMenu(window: BrowserWindow) {
+function listenContextMenu(window: BrowserWindow): void {
   // Menu contextuel
   const menu = Menu.buildFromTemplate([
     { role: "reload", label: "Rafraîchir la page" },
@@ -53,7 +58,7 @@ export function listenContextMenu(window: BrowserWindow) {
 }
 
 /** Créer la fenêtre */
-export function createWindow() {
+export function createWindow(): BrowserWindow {
   const window = new BrowserWindow({
     title: "Blablaland",
     width: 1280,
@@ -81,7 +86,7 @@ export function createWindow() {
     window.show();
   });
 
-  app.on('browser-window-created', (e, win) => {
+  app.on("browser-window-created", (e, win) => {
     listenContextMenu(win);
   });
 
