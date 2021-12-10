@@ -16,9 +16,22 @@ function getPluginName(): string {
   }
 }
 
+function getPluginPlatform(): string {
+  switch (process.platform) {
+    case "linux":
+      return "linux";
+    case "darwin":
+      return "mac";
+    case "win32":
+      return "win";
+    default:
+      throw new Error("Impossible de trouver le plugin de votre plateforme.");
+  }
+}
+
 function getPluginPath(pluginName: string): string {
   const pluginPath = electronIsDev
-    ? path.join("plugins", process.platform, process.arch, pluginName)
+    ? path.join("plugins", getPluginPlatform(), process.arch, pluginName)
     : path.join(process.resourcesPath, "plugins", pluginName);
 
   if (!fs.existsSync(pluginPath)) {
