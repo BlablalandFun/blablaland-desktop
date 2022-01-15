@@ -50,6 +50,13 @@ Build le launcher
 **Non**.\
 Blablaland.fun a toujours été un serveur où nous avons fait notre maximum pour respecter votre vie privée et en vous protégeant un maximum des problématiques de sécurité. 
 
+Voici les raisons de pourquoi votre anti-virus peut les détecter comme "indésirables" :
+- les applications ne sont pas signées donc votre anti-virus peut les détecter comme "indésirables" (à priori)
+La licence Apple (pour signer) coûte $100 par an et celle de Microsoft coûte $179 (a priori).
+- l'autre raison est que le logiciel n'a pas été téléchargé beaucoup de fois !
+
+En espérant que vous comprendrez pourquoi elles ne sont pas signées :)
+
 #### Puis-je utiliser ce launcher pour mon rétro ?
 
 Faites en ce que vous voulez.
