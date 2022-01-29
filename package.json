@@ -31,6 +31,6 @@
   },
   "dependencies": {
     "discord-rpc": "^4.0.1",
-    "electron-updater": "^4.6.1"
+    "electron-updater": "4.3.9"
   }
 }
