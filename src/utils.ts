@@ -3,6 +3,8 @@ import { app, BrowserWindow, Menu, shell } from "electron";
 import fs from "fs";
 import path from "path";
 
+import RPC from 'discord-rpc'
+
 function getPluginFile(): string {
   switch (process.platform) {
     case "win32":
@@ -35,7 +37,7 @@ function getPluginPlatform(): string {
 
 export function getPluginPath(): string {
   const pluginName = getPluginFile();
-  
+
   // si l'application est en prod
   let pluginPath;
   if (app.isPackaged) {
@@ -102,6 +104,8 @@ export function createWindow(): BrowserWindow {
   window.once("ready-to-show", () => {
     window.webContents.setZoomFactor(1.0);
     window.show();
+
+    enableDiscordRPC();
   });
 
   window.webContents.on('will-navigate', (event, url) => {
@@ -127,4 +131,24 @@ export function createWindow(): BrowserWindow {
   listenContextMenu(window);
 
   return window;
+}
+
+
+function enableDiscordRPC() {
+  const clientId = '684370117793939515';
+
+  const client = new RPC.Client({
+    transport: 'ipc',
+  });
+  client.on('ready', () => {
+    console.log(`Logged in as ${client.user.username}`);
+    client.setActivity({
+      state: 'Joue à Blablaland.fun',
+      startTimestamp: new Date(),
+      largeImageKey: '512x512',
+      instance: false,
+    });
+  });
+
+  client.login({ clientId }).catch(console.error);
 }
