@@ -54,7 +54,9 @@ export function getPlugin(): { pluginName: string; pluginPath: string } {
 function listenContextMenu(window: BrowserWindow): void {
   // Menu contextuel
   const menu = Menu.buildFromTemplate([
-    { role: "reload", label: "Rafraîchir la page" },
+    { role: "selectPreviousTab", label: "Retour" },
+    { role: "selectNextTab", label: "Suivant" },
+    { role: "reload", label: "Actualiser" },
     { type: "separator" },
     { role: "zoomIn", label: "Zoom en avant" },
     { role: "zoomOut", label: "Zoom en arrière" },
@@ -72,6 +74,11 @@ function listenContextMenu(window: BrowserWindow): void {
 
 /** Créer la fenêtre */
 export function createWindow(): BrowserWindow {
+  let targetUrl = app.commandLine.getSwitchValue("target");
+  if (targetUrl === "") {
+    targetUrl = "https://blablaland.fun/login";
+  }
+
   const window = new BrowserWindow({
     title: "Blablaland",
     width: 1280,
@@ -85,14 +92,11 @@ export function createWindow(): BrowserWindow {
       plugins: true,
       contextIsolation: true,
     },
+
   });
 
-  const targetUrl = app.commandLine.getSwitchValue("target");
-  if (targetUrl.length === 0) {
-    window.loadURL("https://blablaland.fun/login");
-  } else {
-    window.loadURL(targetUrl);
-  }
+
+  window.loadURL(targetUrl);
 
   window.once("ready-to-show", () => {
     window.webContents.setZoomFactor(1.0);
