@@ -12,7 +12,7 @@
   "homepage": "./",
   "repository": {
     "type": "git",
-    "url": "https://github.com/yovach/blablaland-desktop"
+    "url": "https://github.com/BlablalandFun/blablaland-desktop/"
   },
   "scripts": {
     "postinstall": "electron-builder install-app-deps",
