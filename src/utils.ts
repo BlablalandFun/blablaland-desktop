@@ -142,8 +142,13 @@ function enableDiscordRPC() {
   });
   client.on('ready', () => {
     console.log(`Logged in as ${client.user.username}`);
-    console.log('Discord RPC ready');
+    client.setActivity({
+      state: 'Joue à Blablaland.fun',
+      startTimestamp: new Date(),
+      largeImageKey: '512x512',
+      instance: false,
+    });
   });
 
-  client.login({ clientId, scopes: ['rpc', 'rpc.api'] });
+  client.login({ clientId }).catch(console.error);
 }
