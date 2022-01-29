@@ -3,6 +3,7 @@
 import { app, BrowserWindow } from "electron";
 import log from "electron-log";
 import { autoUpdater } from "electron-updater";
+import electronIsDev from "electron-is-dev";
 import { createWindow, getPlugin } from "./utils";
 
 const gotTheLock = app.requestSingleInstanceLock();
@@ -37,7 +38,11 @@ try {
         window = createWindow();
       }
     });
-    autoUpdater.checkForUpdatesAndNotify();
+
+    // on ne cherche pas de mises à jour si on est en développement
+    if (!electronIsDev) {
+      autoUpdater.checkForUpdates().catch(console.error);
+    }
   });
 
   app.on("window-all-closed", () => {
