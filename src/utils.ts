@@ -1,16 +1,19 @@
+import crypto from 'crypto';
 import { app, BrowserWindow, Menu, shell } from "electron";
-import electronIsDev from "electron-is-dev";
 import fs from "fs";
 import path from "path";
-import crypto from 'crypto'
 
-function getPluginName(): string {
+function getPluginFile(): string {
   switch (process.platform) {
     case "win32":
       return "pepflashplayer.dll";
     case "darwin":
       return "PepperFlashPlayer.plugin";
+    case "freebsd":
     case "linux":
+    case "openbsd":
+    case "netbsd":
+      app.commandLine.appendSwitch("no-sandbox");
       return "libpepflashplayer.so";
     default:
       throw new Error("Impossible de trouver le plugin de votre plateforme.");
@@ -30,26 +33,21 @@ function getPluginPlatform(): string {
   }
 }
 
-function getPluginPath(pluginName: string): string {
-  const pluginPath = electronIsDev
-    ? path.join("plugins", getPluginPlatform(), process.arch, pluginName)
-    : path.join(process.resourcesPath, "plugins", pluginName);
-
-  if (!fs.existsSync(pluginPath)) {
-    console.log(pluginPath);
-    throw new Error("Le plugin n'existe pas ou n'est pas trouvable.");
+export function getPluginPath(): string {
+  const pluginName = getPluginFile();
+  
+  // si l'application est en prod
+  let pluginPath;
+  if (app.isPackaged) {
+    pluginPath = path.join(process.resourcesPath, "plugins", pluginName);
+  } else {
+    pluginPath = path.join("plugins", getPluginPlatform(), process.arch, pluginName);
   }
 
+  if (!fs.existsSync(pluginPath)) {
+    throw new Error("Le plugin n'existe pas ou n'est pas trouvable.");
+  }
   return pluginPath;
-}
-
-export function getPlugin(): { pluginName: string; pluginPath: string } {
-  const pluginName = getPluginName();
-
-  return {
-    pluginName,
-    pluginPath: getPluginPath(pluginName),
-  };
 }
 
 function listenContextMenu(window: BrowserWindow): void {
