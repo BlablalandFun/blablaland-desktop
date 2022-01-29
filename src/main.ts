@@ -3,7 +3,7 @@
 import { app, BrowserWindow } from "electron";
 import log from "electron-log";
 import { autoUpdater } from "electron-updater";
-import { createWindow, getPluginName } from "./utils";
+import { createWindow, getPlugin } from "./utils";
 
 const gotTheLock = app.requestSingleInstanceLock();
 if (!gotTheLock) {
@@ -12,7 +12,7 @@ if (!gotTheLock) {
 
 let window: BrowserWindow | null = null;
 try {
-  const { pluginName, pluginPath } = getPluginName();
+  const { pluginPath } = getPlugin();
   if (process.platform === "linux") {
     app.commandLine.appendSwitch("no-sandbox");
   }
