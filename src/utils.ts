@@ -1,4 +1,4 @@
-import { app, BrowserWindow, Menu } from "electron";
+import { app, BrowserWindow, Menu, shell } from "electron";
 import electronIsDev from "electron-is-dev";
 import fs from "fs";
 import path from "path";
@@ -104,6 +104,22 @@ export function createWindow(): BrowserWindow {
   window.once("ready-to-show", () => {
     window.webContents.setZoomFactor(1.0);
     window.show();
+  });
+
+  window.webContents.on('will-navigate', (event, url) => {
+    const isExternal = new URL(url).hostname !== "blablaland.fun";
+    if (isExternal) {
+      event.preventDefault();
+      shell.openExternal(url);
+    }
+  });
+
+  window.webContents.on('new-window', (event, url) => {
+    const isExternal = new URL(url).hostname !== "blablaland.fun";
+    if (isExternal) {
+      event.preventDefault();
+      shell.openExternal(url);
+    }
   });
 
   app.on("browser-window-created", (e, win) => {
