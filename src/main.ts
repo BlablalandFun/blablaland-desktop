@@ -1,21 +1,17 @@
 "use strict";
 
 import { app, BrowserWindow } from "electron";
-import log from "electron-log";
 import { autoUpdater } from "electron-updater";
-import { createWindow, getPlugin } from "./utils";
+import { createWindow, getPluginPath } from "./utils";
 
 const gotTheLock = app.requestSingleInstanceLock();
 if (!gotTheLock) {
   app.quit();
 }
 
-let window: BrowserWindow | null = null;
+let window: BrowserWindow | undefined = undefined;
 try {
-  const { pluginPath } = getPlugin();
-  if (process.platform === "linux") {
-    app.commandLine.appendSwitch("no-sandbox");
-  }
+  const pluginPath = getPluginPath();
 
   /** On ajoute le plugin "Flash Player" à l'application */
   app.commandLine.appendSwitch("ppapi-flash-path", pluginPath);
@@ -37,7 +33,11 @@ try {
         window = createWindow();
       }
     });
-    autoUpdater.checkForUpdatesAndNotify();
+
+    // on ne cherche pas de mises à jour si on est en développement
+    if (app.isPackaged) {
+      autoUpdater.checkForUpdates().catch(console.error);
+    }
   });
 
   app.on("window-all-closed", () => {
@@ -46,5 +46,5 @@ try {
     }
   });
 } catch (reason) {
-  log.error(reason);
+  console.error(reason);
 }

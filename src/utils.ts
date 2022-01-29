@@ -1,15 +1,21 @@
-import { app, BrowserWindow, Menu } from "electron";
-import electronIsDev from "electron-is-dev";
+import crypto from 'crypto';
+import { app, BrowserWindow, Menu, shell } from "electron";
 import fs from "fs";
 import path from "path";
 
-function getPluginName(): string {
+import RPC from 'discord-rpc'
+
+function getPluginFile(): string {
   switch (process.platform) {
     case "win32":
       return "pepflashplayer.dll";
     case "darwin":
       return "PepperFlashPlayer.plugin";
+    case "freebsd":
     case "linux":
+    case "openbsd":
+    case "netbsd":
+      app.commandLine.appendSwitch("no-sandbox");
       return "libpepflashplayer.so";
     default:
       throw new Error("Impossible de trouver le plugin de votre plateforme.");
@@ -29,32 +35,29 @@ function getPluginPlatform(): string {
   }
 }
 
-function getPluginPath(pluginName: string): string {
-  const pluginPath = electronIsDev
-    ? path.join("plugins", getPluginPlatform(), process.arch, pluginName)
-    : path.join(process.resourcesPath, "plugins", pluginName);
+export function getPluginPath(): string {
+  const pluginName = getPluginFile();
 
-  if (!fs.existsSync(pluginPath)) {
-    console.log(pluginPath);
-    throw new Error("Le plugin n'existe pas ou n'est pas trouvable.");
+  // si l'application est en prod
+  let pluginPath;
+  if (app.isPackaged) {
+    pluginPath = path.join(process.resourcesPath, "plugins", pluginName);
+  } else {
+    pluginPath = path.join("plugins", getPluginPlatform(), process.arch, pluginName);
   }
 
+  if (!fs.existsSync(pluginPath)) {
+    throw new Error("Le plugin n'existe pas ou n'est pas trouvable.");
+  }
   return pluginPath;
-}
-
-export function getPlugin(): { pluginName: string; pluginPath: string } {
-  const pluginName = getPluginName();
-
-  return {
-    pluginName,
-    pluginPath: getPluginPath(pluginName),
-  };
 }
 
 function listenContextMenu(window: BrowserWindow): void {
   // Menu contextuel
   const menu = Menu.buildFromTemplate([
-    { role: "reload", label: "Rafraîchir la page" },
+    { role: "selectPreviousTab", label: "Retour" },
+    { role: "selectNextTab", label: "Suivant" },
+    { role: "reload", label: "Actualiser" },
     { type: "separator" },
     { role: "zoomIn", label: "Zoom en avant" },
     { role: "zoomOut", label: "Zoom en arrière" },
@@ -72,6 +75,13 @@ function listenContextMenu(window: BrowserWindow): void {
 
 /** Créer la fenêtre */
 export function createWindow(): BrowserWindow {
+  let targetUrl = app.commandLine.getSwitchValue("target");
+  if (targetUrl === "") {
+    targetUrl = "https://blablaland.fun/login";
+  }
+
+  const sha1 = crypto.createHash("sha1");
+  const partition = sha1.update(targetUrl, "utf8").digest("hex").substring(0, 16);
   const window = new BrowserWindow({
     title: "Blablaland",
     width: 1280,
@@ -84,19 +94,34 @@ export function createWindow(): BrowserWindow {
       devTools: true,
       plugins: true,
       contextIsolation: true,
+      partition,
     },
   });
 
-  const targetUrl = app.commandLine.getSwitchValue("target");
-  if (targetUrl.length === 0) {
-    window.loadURL("https://blablaland.fun/login");
-  } else {
-    window.loadURL(targetUrl);
-  }
+
+  window.loadURL(targetUrl);
 
   window.once("ready-to-show", () => {
     window.webContents.setZoomFactor(1.0);
     window.show();
+
+    enableDiscordRPC();
+  });
+
+  window.webContents.on('will-navigate', (event, url) => {
+    const isExternal = new URL(url).hostname !== "blablaland.fun";
+    if (isExternal) {
+      event.preventDefault();
+      shell.openExternal(url);
+    }
+  });
+
+  window.webContents.on('new-window', (event, url) => {
+    const isExternal = new URL(url).hostname !== "blablaland.fun";
+    if (isExternal) {
+      event.preventDefault();
+      shell.openExternal(url);
+    }
   });
 
   app.on("browser-window-created", (e, win) => {
@@ -106,4 +131,24 @@ export function createWindow(): BrowserWindow {
   listenContextMenu(window);
 
   return window;
+}
+
+
+function enableDiscordRPC() {
+  const clientId = '684370117793939515';
+
+  const client = new RPC.Client({
+    transport: 'ipc',
+  });
+  client.on('ready', () => {
+    console.log(`Logged in as ${client.user.username}`);
+    client.setActivity({
+      state: 'Joue à Blablaland.fun',
+      startTimestamp: new Date(),
+      largeImageKey: '512x512',
+      instance: false,
+    });
+  });
+
+  client.login({ clientId }).catch(console.error);
 }
