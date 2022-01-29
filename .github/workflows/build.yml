@@ -31,6 +31,13 @@ jobs:
         with:
           node-version: 14
 
+      - name: Install GCC Linux
+        run:  |
+              if [ "$RUNNER_OS" == "Linux" ]; then
+                sudo apt-get install --no-install-recommends -y gcc-multilib g++-multilib
+              fi
+        shell: bash
+
       - name: Build/release Electron app
         uses: samuelmeuli/action-electron-builder@v1
         with:
