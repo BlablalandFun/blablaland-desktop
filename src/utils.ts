@@ -2,6 +2,7 @@ import { app, BrowserWindow, Menu } from "electron";
 import electronIsDev from "electron-is-dev";
 import fs from "fs";
 import path from "path";
+import crypto from 'crypto'
 
 function getPluginName(): string {
   switch (process.platform) {
@@ -79,6 +80,8 @@ export function createWindow(): BrowserWindow {
     targetUrl = "https://blablaland.fun/login";
   }
 
+  const sha1 = crypto.createHash("sha1");
+  const partition = sha1.update(targetUrl, "utf8").digest("hex").substring(0, 16);
   const window = new BrowserWindow({
     title: "Blablaland",
     width: 1280,
@@ -91,8 +94,8 @@ export function createWindow(): BrowserWindow {
       devTools: true,
       plugins: true,
       contextIsolation: true,
+      partition,
     },
-
   });
 
 
