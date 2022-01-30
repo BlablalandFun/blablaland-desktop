@@ -55,8 +55,16 @@ export function getPluginPath(): string {
 function listenContextMenu(window: BrowserWindow): void {
   // Menu contextuel
   const menu = Menu.buildFromTemplate([
-    { role: "selectPreviousTab", label: "Retour" },
-    { role: "selectNextTab", label: "Suivant" },
+    {
+      click: () => window.webContents.goBack(),
+      enabled: window.webContents.canGoBack(),
+      label: "Retour"
+    },
+    {
+      click: () => window.webContents.goForward(),
+      enabled: window.webContents.canGoForward(),
+      label: "Suivant"
+    },
     { role: "reload", label: "Actualiser" },
     { type: "separator" },
     { role: "zoomIn", label: "Zoom en avant" },
@@ -64,6 +72,7 @@ function listenContextMenu(window: BrowserWindow): void {
     { role: "resetZoom", label: "Réinitialiser le zoom" },
   ]);
 
+  window.webContents.removeAllListeners('context-menu');
   window.webContents.on("context-menu", (e, params) => {
     menu.popup({
       window,
@@ -117,6 +126,10 @@ export function createWindow(): BrowserWindow {
       shell.openExternal(url);
     }
   });
+
+  window.webContents.on('did-navigate', (event, url) => {
+    listenContextMenu(window); 
+  })
 
   window.webContents.on('new-window', (event, url) => {
     const isExternal = new URL(url).hostname !== new URL(targetUrl).hostname;
