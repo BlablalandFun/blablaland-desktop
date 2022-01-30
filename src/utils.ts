@@ -80,8 +80,10 @@ export function createWindow(): BrowserWindow {
     targetUrl = "https://blablaland.fun/login";
   }
 
+  const partitionURL = new URL(targetUrl).hostname;
   const sha1 = crypto.createHash("sha1");
-  const partition = sha1.update(targetUrl, "utf8").digest("hex").substring(0, 16);
+  const partition = sha1.update(partitionURL, "utf8").digest("hex").substring(0, 16);
+
   const window = new BrowserWindow({
     title: "Blablaland",
     width: 1280,
@@ -94,7 +96,7 @@ export function createWindow(): BrowserWindow {
       devTools: true,
       plugins: true,
       contextIsolation: true,
-      partition,
+      partition: "persist:" + partition,
     },
   });
 
@@ -109,7 +111,7 @@ export function createWindow(): BrowserWindow {
   });
 
   window.webContents.on('will-navigate', (event, url) => {
-    const isExternal = new URL(url).hostname !== "blablaland.fun";
+    const isExternal = new URL(url).hostname !== new URL(targetUrl).hostname;
     if (isExternal) {
       event.preventDefault();
       shell.openExternal(url);
@@ -117,7 +119,7 @@ export function createWindow(): BrowserWindow {
   });
 
   window.webContents.on('new-window', (event, url) => {
-    const isExternal = new URL(url).hostname !== "blablaland.fun";
+    const isExternal = new URL(url).hostname !== new URL(targetUrl).hostname;
     if (isExternal) {
       event.preventDefault();
       shell.openExternal(url);
