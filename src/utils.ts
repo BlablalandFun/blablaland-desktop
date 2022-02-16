@@ -18,11 +18,11 @@ function refreshContextMenu(window: BrowserWindow): void {
       enabled: window.webContents.canGoForward(),
       label: "Suivant"
     },
-    { role: "reload" },
+    { role: "reload", label: "Actualiser" },
     { type: "separator" },
-    { role: "zoomIn" },
-    { role: "zoomOut" },
-    { role: "resetZoom" },
+    { role: "zoomIn", label: "Zoom en avant" },
+    { role: "zoomOut", label: "Zoom en arrière" },
+    { role: "resetZoom", label: "Réinitialiser le zoom" },
     { type: "separator" },
     {
       click: () => toggleDiscordRPC(),
