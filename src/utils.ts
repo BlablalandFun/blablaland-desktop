@@ -1,56 +1,8 @@
 import crypto from 'crypto';
+import RPC from 'discord-rpc';
 import { app, BrowserWindow, Menu, shell } from "electron";
-import fs from "fs";
-import path from "path";
+import { getConfig } from './helpers';
 
-import RPC from 'discord-rpc'
-
-function getPluginFile(): string {
-  switch (process.platform) {
-    case "win32":
-      return "pepflashplayer.dll";
-    case "darwin":
-      return "PepperFlashPlayer.plugin";
-    case "freebsd":
-    case "linux":
-    case "openbsd":
-    case "netbsd":
-      app.commandLine.appendSwitch("no-sandbox");
-      return "libpepflashplayer.so";
-    default:
-      throw new Error("Impossible de trouver le plugin de votre plateforme.");
-  }
-}
-
-function getPluginPlatform(): string {
-  switch (process.platform) {
-    case "linux":
-      return "linux";
-    case "darwin":
-      return "mac";
-    case "win32":
-      return "win";
-    default:
-      throw new Error("Impossible de trouver le plugin de votre plateforme.");
-  }
-}
-
-export function getPluginPath(): string {
-  const pluginName = getPluginFile();
-
-  // si l'application est en prod
-  let pluginPath;
-  if (app.isPackaged) {
-    pluginPath = path.join(process.resourcesPath, "plugins", pluginName);
-  } else {
-    pluginPath = path.join("plugins", getPluginPlatform(), process.arch, pluginName);
-  }
-
-  if (!fs.existsSync(pluginPath)) {
-    throw new Error("Le plugin n'existe pas ou n'est pas trouvable.");
-  }
-  return pluginPath;
-}
 
 function listenContextMenu(window: BrowserWindow): void {
   // Menu contextuel
@@ -65,11 +17,16 @@ function listenContextMenu(window: BrowserWindow): void {
       enabled: window.webContents.canGoForward(),
       label: "Suivant"
     },
-    { role: "reload", label: "Actualiser" },
+    { role: "reload" },
     { type: "separator" },
-    { role: "zoomIn", label: "Zoom en avant" },
-    { role: "zoomOut", label: "Zoom en arrière" },
-    { role: "resetZoom", label: "Réinitialiser le zoom" },
+    { role: "zoomIn" },
+    { role: "zoomOut" },
+    { role: "resetZoom" },
+    { type: "separator" },
+    {
+      click: () => toggleDiscordRPC(),
+      label: (global.rpc ? "Désactiver" : "Activer") + " le RPC Discord"
+    }
   ]);
 
   window.webContents.removeAllListeners('context-menu');
@@ -116,7 +73,8 @@ export function createWindow(): BrowserWindow {
     window.webContents.setZoomFactor(1.0);
     window.show();
 
-    enableDiscordRPC();
+    const config = getConfig();
+    config.discord && toggleDiscordRPC();
   });
 
   window.webContents.on('will-navigate', (event, url) => {
@@ -128,7 +86,7 @@ export function createWindow(): BrowserWindow {
   });
 
   window.webContents.on('did-navigate', (event, url) => {
-    listenContextMenu(window); 
+    listenContextMenu(window);
   })
 
   window.webContents.on('new-window', (event, url) => {
@@ -149,21 +107,35 @@ export function createWindow(): BrowserWindow {
 }
 
 
-function enableDiscordRPC() {
-  const clientId = '684370117793939515';
+function toggleDiscordRPC() {
 
-  const client = new RPC.Client({
-    transport: 'ipc',
-  });
-  client.on('ready', () => {
-    console.log(`Logged in as ${client.user.username}`);
-    client.setActivity({
-      state: 'Joue à Blablaland.fun',
-      startTimestamp: new Date(),
-      largeImageKey: '512x512',
-      instance: false,
+  if (global.rpc) {
+    try {
+      global.rpc.clearActivity();
+      global.rpc.destroy();
+    } catch (err) {
+      // sûrement parce que le RPC n'était pas connecté
+    }
+
+    global.rpc = undefined;
+  } else {
+    const clientId = '684370117793939515';
+
+    const client = new RPC.Client({
+      transport: 'ipc',
     });
-  });
+    client.on('ready', () => {
+      console.log(`Logged in as ${client.user.username}`);
+      client.setActivity({
+        state: 'Joue à Blablaland.fun',
+        startTimestamp: new Date(),
+        largeImageKey: '512x512',
+        instance: false,
+      });
 
-  client.login({ clientId }).catch(console.error);
+      // si on arrive à se connecter, on enregistre le client en tant que variable globale
+      global.rpc = client;
+    });
+    client.login({ clientId }).catch(console.error);
+  }
 }
