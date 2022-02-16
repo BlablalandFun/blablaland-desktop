@@ -2,7 +2,8 @@
 
 import { app, BrowserWindow } from "electron";
 import { autoUpdater } from "electron-updater";
-import { createWindow, getPluginPath } from "./utils";
+import { getPluginPath } from "./helpers";
+import { createWindow } from "./utils";
 
 const gotTheLock = app.requestSingleInstanceLock();
 if (!gotTheLock) {
