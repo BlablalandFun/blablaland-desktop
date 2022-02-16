@@ -1,5 +1,7 @@
 [![MIT License](https://img.shields.io/apm/l/atomic-design-ui.svg?)](https://github.com/tterb/atomic-design-ui/blob/master/LICENSEs)
 
+![Nombre de téléchargements](https://img.shields.io/github/downloads/BlablalandFun/blablaland-desktop/total)
+
 # Blablaland Desktop
 
 C'est un "launcher" permettant de jouer à Blablaland à travers un logiciel qui contient le runtime **Flash Player**.
