@@ -1,10 +1,11 @@
 import crypto from 'crypto';
 import RPC from 'discord-rpc';
 import { app, BrowserWindow, Menu, shell } from "electron";
-import { getConfig } from './helpers';
+import { getConfig, saveConfig } from './helpers';
 
 
-function listenContextMenu(window: BrowserWindow): void {
+function refreshContextMenu(window: BrowserWindow): void {
+
   // Menu contextuel
   const menu = Menu.buildFromTemplate([
     {
@@ -50,7 +51,7 @@ export function createWindow(): BrowserWindow {
   const sha1 = crypto.createHash("sha1");
   const partition = sha1.update(partitionURL, "utf8").digest("hex").substring(0, 16);
 
-  const window = new BrowserWindow({
+  const window = global.mainWindow = new BrowserWindow({
     title: "Blablaland",
     width: 1280,
     height: 720,
@@ -86,7 +87,7 @@ export function createWindow(): BrowserWindow {
   });
 
   window.webContents.on('did-navigate', (event, url) => {
-    listenContextMenu(window);
+    refreshContextMenu(window);
   })
 
   window.webContents.on('new-window', (event, url) => {
@@ -98,10 +99,10 @@ export function createWindow(): BrowserWindow {
   });
 
   app.on("browser-window-created", (e, win) => {
-    listenContextMenu(win);
+    refreshContextMenu(win);
   });
 
-  listenContextMenu(window);
+  refreshContextMenu(window);
 
   return window;
 }
@@ -117,7 +118,14 @@ function toggleDiscordRPC() {
       // sûrement parce que le RPC n'était pas connecté
     }
 
+
     global.rpc = undefined;
+
+    saveConfig({ discord: false })
+
+    if (global.mainWindow) {
+      refreshContextMenu(global.mainWindow);
+    }
   } else {
     const clientId = '684370117793939515';
 
@@ -126,6 +134,7 @@ function toggleDiscordRPC() {
     });
     client.on('ready', () => {
       console.log(`Logged in as ${client.user.username}`);
+
       client.setActivity({
         state: 'Joue à Blablaland.fun',
         startTimestamp: new Date(),
@@ -135,6 +144,12 @@ function toggleDiscordRPC() {
 
       // si on arrive à se connecter, on enregistre le client en tant que variable globale
       global.rpc = client;
+
+      if (global.mainWindow) {
+        refreshContextMenu(global.mainWindow);
+      }
+
+      saveConfig({ discord: true });
     });
     client.login({ clientId }).catch(console.error);
   }
